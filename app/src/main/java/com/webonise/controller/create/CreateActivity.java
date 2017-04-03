@@ -42,9 +42,7 @@ public class CreateActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == mBtnSave.getId() || presenter.validateData(mEdtTitle.getText().toString(), getType())) {
-            presenter.saveDataInRealm(mEdtTitle.getText().toString(), getType());
-        }
+        presenter.validateData(mEdtTitle.getText().toString());
     }
 
     public boolean getType() {
@@ -68,6 +66,16 @@ public class CreateActivity extends BaseActivity implements View.OnClickListener
         Toast.makeText(this, "SWW", Toast.LENGTH_SHORT).show();
         setResult(RESULT_CANCELED);
         finish();
+    }
+
+    @Override
+    public void onValidData() {
+        presenter.saveDataInRealm(mEdtTitle.getText().toString(), getType());
+    }
+
+    @Override
+    public void onInValidData() {
+        Toast.makeText(this, "Enter Valid Data", Toast.LENGTH_SHORT).show();
     }
 
     @Override

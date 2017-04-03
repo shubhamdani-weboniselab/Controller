@@ -4,5 +4,5 @@ public interface CreatePresenter {
 
     void saveDataInRealm(String s, boolean type);
 
-    boolean validateData(String s, boolean type);
+    void validateData(String s);
 }

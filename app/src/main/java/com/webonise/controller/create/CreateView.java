@@ -11,4 +11,8 @@ interface CreateView {
     void onSuccessfullySavingDataInRealm();
 
     void onErrorOfSavingDataInRealm();
+
+    void onValidData();
+
+    void onInValidData();
 }

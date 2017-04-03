@@ -1,6 +1,6 @@
 package com.webonise.controller.create;
 
-class CreatePresenterImpl implements CreatePresenter, CreateInteractor.OnCreationFinishListener {
+class CreatePresenterImpl implements CreatePresenter, CreateInteractor.OnCreationFinishListener, CreateInteractor.OnValidDataListener {
 
     private final CreateInteractorImpl interactor;
     private CreateView createView;
@@ -16,8 +16,8 @@ class CreatePresenterImpl implements CreatePresenter, CreateInteractor.OnCreatio
     }
 
     @Override
-    public boolean validateData(String s) {
-        return interactor.validateData(s);
+    public void validateData(String s) {
+        interactor.validateData(s, this);
     }
 
     @Override
@@ -28,5 +28,15 @@ class CreatePresenterImpl implements CreatePresenter, CreateInteractor.OnCreatio
     @Override
     public void onError() {
         createView.onErrorOfSavingDataInRealm();
+    }
+
+    @Override
+    public void onValidData() {
+        createView.onValidData();
+    }
+
+    @Override
+    public void onInValidData() {
+        createView.onInValidData();
     }
 }

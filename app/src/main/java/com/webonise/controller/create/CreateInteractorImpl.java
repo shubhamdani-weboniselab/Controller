@@ -10,8 +10,13 @@ import io.realm.Realm;
 class CreateInteractorImpl implements CreateInteractor {
 
     @Override
-    public boolean validateData(String s) {
-        return TextUtils.isEmpty(s);
+    public void validateData(String s, CreateInteractor.OnValidDataListener listener) {
+
+        if (TextUtils.isEmpty(s)) {
+            listener.onInValidData();
+        } else {
+            listener.onValidData();
+        }
     }
 
     @Override
