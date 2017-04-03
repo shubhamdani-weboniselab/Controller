@@ -18,6 +18,7 @@
             android:layout_height="wrap_content">
 
             <EditText
+                android:id="@+id/mEdtTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Title"
@@ -26,32 +27,32 @@
         </android.support.design.widget.TextInputLayout>
 
         <RadioGroup
+            android:id="@+id/mRgType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <RadioButton
-                android:layout_width="0dp"
+                android:id="@+id/rbShould"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="@color/green"
-                android:text="Should do" />
+                android:text="to do" />
 
             <RadioButton
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="@color/red"
-                android:text="Should Not" />
+                android:text="to do not" />
         </RadioGroup>
     </LinearLayout>
 
     <Button
+        android:id="@+id/mBtnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:background="@color/blue"
-        android:text="save" />
+        android:background="@drawable/white_button"
+        android:text="save"
+        android:textColor="@color/black" />
 </LinearLayout>

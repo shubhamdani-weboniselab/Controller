@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@color/lightcolorAccent</item>
         <item name="android:toolbarStyle">@style/Widget.AppCompat.Toolbar</item>
 
     </style>
