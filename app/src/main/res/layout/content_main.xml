@@ -13,10 +13,9 @@
     tools:context="com.webonise.controller.listing.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mRlListing"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="2dp"
-        android:background="@color/white"
-        android:text="Hello World!" />
+        android:layout_height="match_parent"
+        android:background="@color/white" />
 </RelativeLayout>

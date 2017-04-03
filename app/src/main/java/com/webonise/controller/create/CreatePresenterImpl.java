@@ -16,6 +16,11 @@ class CreatePresenterImpl implements CreatePresenter, CreateInteractor.OnCreatio
     }
 
     @Override
+    public boolean validateData(String s) {
+        return interactor.validateData(s);
+    }
+
+    @Override
     public void onSuccess() {
         createView.onSuccessfullySavingDataInRealm();
     }

@@ -2,6 +2,8 @@ package com.webonise.controller.create;
 
 interface CreateInteractor {
 
+    boolean validateData(String s);
+
     interface OnCreationFinishListener {
         void onSuccess();
 

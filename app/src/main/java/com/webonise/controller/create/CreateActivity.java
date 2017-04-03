@@ -1,5 +1,6 @@
 package com.webonise.controller.create;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import com.webonise.controller.BaseActivity;
 import com.webonise.controller.R;
+import com.webonise.controller.listing.MainActivity;
 
 public class CreateActivity extends BaseActivity implements View.OnClickListener, CreateView {
 
@@ -40,7 +42,7 @@ public class CreateActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == mBtnSave.getId()) {
+        if (view.getId() == mBtnSave.getId() || presenter.validateData(mEdtTitle.getText().toString(), getType())) {
             presenter.saveDataInRealm(mEdtTitle.getText().toString(), getType());
         }
     }
@@ -57,12 +59,23 @@ public class CreateActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onSuccessfullySavingDataInRealm() {
         Toast.makeText(this, "Saved Successfully", Toast.LENGTH_SHORT).show();
+        setResult(RESULT_OK);
         finish();
     }
 
     @Override
     public void onErrorOfSavingDataInRealm() {
         Toast.makeText(this, "SWW", Toast.LENGTH_SHORT).show();
+        setResult(RESULT_CANCELED);
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case MainActivity.CREATE_CODE:
+                break;
+        }
     }
 }
