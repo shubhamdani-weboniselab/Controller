@@ -6,9 +6,9 @@ import com.webonise.controller.create.CreateModel;
 
 import io.realm.RealmResults;
 
-public class ListingPresenterImpl implements ListingPresenter, ListingInteractor.OnListingResultListener {
+public class ListingPresenterImpl implements ListingPresenter, ListingInteractor.OnListingResultListener, ListingInteractor.OnListingDeleteListener {
 
-    private final ListingInteractorImpl listingInteractor;
+    private final ListingInteractor listingInteractor;
     private ListingView view;
 
     public ListingPresenterImpl(ListingView view) {
@@ -27,6 +27,21 @@ public class ListingPresenterImpl implements ListingPresenter, ListingInteractor
     }
 
     @Override
+    public void onItemClick(CreateModel createModel, int position) {
+        view.startEditActivity(createModel, position);
+    }
+
+    @Override
+    public void onLongClick(CreateModel createModel, int position) {
+        view.showDeleteDialog(createModel, position);
+    }
+
+    @Override
+    public void deleteItem(int position) {
+        listingInteractor.removeDataFromRealm(position, this);
+    }
+
+    @Override
     public void onSuccess(RealmResults<CreateModel> data) {
         Log.d("@@", "fetched success");
         view.showAllListing(data);
@@ -35,5 +50,15 @@ public class ListingPresenterImpl implements ListingPresenter, ListingInteractor
     @Override
     public void onError() {
         Log.d("@@", "fetched failuer");
+    }
+
+    @Override
+    public void onDeleteSuccess() {
+        view.showMessage("Successfully Deleted");
+    }
+
+    @Override
+    public void onDeleteError() {
+        view.showMessage("Delete failed");
     }
 }

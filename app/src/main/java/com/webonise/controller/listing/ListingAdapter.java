@@ -17,12 +17,12 @@ class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.Viewholder> {
 
     private Context context;
     private final RealmResults<CreateModel> data;
-    private final ListingView listingView;
+    private final ListingPresenter presenter;
 
-    public ListingAdapter(Context context, RealmResults<CreateModel> data, ListingView listingView) {
+    public ListingAdapter(Context context, RealmResults<CreateModel> data, ListingPresenter presenter) {
         this.context = context;
         this.data = data;
-        this.listingView = listingView;
+        this.presenter = presenter;
     }
 
     @Override
@@ -31,9 +31,23 @@ class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.Viewholder> {
     }
 
     @Override
-    public void onBindViewHolder(ListingAdapter.Viewholder holder, int position) {
+    public void onBindViewHolder(ListingAdapter.Viewholder holder, final int position) {
         final CreateModel createModel = data.get(position);
         holder.title.setText(createModel.getTitle());
+        holder.title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onItemClick(createModel, position);
+            }
+        });
+
+        holder.title.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                presenter.onLongClick(createModel, position);
+                return false;
+            }
+        });
     }
 
     @Override

@@ -14,6 +14,21 @@ public class ListingInteractorImpl implements ListingInteractor {
         this.view = view;
     }
 
+    @Override
+    public void removeDataFromRealm(int pos, ListingInteractor.OnListingDeleteListener listener) {
+        try {
+            final Realm realmInstance = ControllerApplication.getRealmInstance();
+            final RealmResults<CreateModel> allCreateModel = realmInstance.where(CreateModel.class).findAll();
+            realmInstance.beginTransaction();
+            allCreateModel.remove(pos);
+            realmInstance.commitTransaction();
+            listener.onDeleteSuccess();
+        } catch (Exception e) {
+            e.printStackTrace();
+            listener.onDeleteError();
+        }
+    }
+
     public void getAllDataFromRealm(ListingInteractor.OnListingResultListener listingResultListener) {
         try {
             final Realm realmInstance = ControllerApplication.getRealmInstance();
