@@ -95,4 +95,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void setupToolBar() {
         setToolBarWithTitle(getString(R.string.listings));
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case MainActivity.CREATE_CODE:
+                adapter.notifyDataSetChanged();
+                break;
+        }
+
+    }
 }
