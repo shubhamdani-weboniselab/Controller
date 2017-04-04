@@ -32,7 +32,10 @@ public class CreateActivity extends BaseActivity implements View.OnClickListener
         mRGType = (RadioGroup) findViewById(R.id.mRgType);
         mEdtTitle = (EditText) findViewById(R.id.mEdtTitle);
         mBtnSave.setOnClickListener(this);
+
         presenter = new CreatePresenterImpl(this);
+        final int position = getIntent().getIntExtra("position", 0);
+        presenter.populateData(position);
     }
 
     @Override
@@ -76,6 +79,11 @@ public class CreateActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onInValidData() {
         Toast.makeText(this, "Enter Valid Data", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setDataInView(CreateModel createModel) {
+        mEdtTitle.setText(createModel.getTitle());
     }
 
     @Override

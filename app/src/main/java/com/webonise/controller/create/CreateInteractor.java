@@ -4,6 +4,8 @@ interface CreateInteractor {
 
     void validateData(String s, CreateInteractor.OnValidDataListener listener);
 
+    void getDataFromRealm(int position, OnItemFetchListener listener);
+
     interface OnCreationFinishListener {
         void onSuccess();
 
@@ -17,4 +19,11 @@ interface CreateInteractor {
     }
 
     void saveDataInLocalDB(String title, boolean type, CreateInteractor.OnCreationFinishListener listener);
+
+    interface OnItemFetchListener {
+        void onSuccess(CreateModel createModel);
+
+        void onError();
+
+    }
 }

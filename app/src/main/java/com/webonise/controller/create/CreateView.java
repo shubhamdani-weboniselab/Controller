@@ -15,4 +15,6 @@ interface CreateView {
     void onValidData();
 
     void onInValidData();
+
+    void setDataInView(CreateModel createModel);
 }

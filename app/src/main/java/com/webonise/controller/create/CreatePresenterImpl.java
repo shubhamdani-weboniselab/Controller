@@ -1,8 +1,8 @@
 package com.webonise.controller.create;
 
-class CreatePresenterImpl implements CreatePresenter, CreateInteractor.OnCreationFinishListener, CreateInteractor.OnValidDataListener {
+class CreatePresenterImpl implements CreatePresenter, CreateInteractor.OnCreationFinishListener, CreateInteractor.OnValidDataListener, CreateInteractor.OnItemFetchListener {
 
-    private final CreateInteractorImpl interactor;
+    private final CreateInteractor interactor;
     private CreateView createView;
 
     public CreatePresenterImpl(CreateView createView) {
@@ -21,8 +21,18 @@ class CreatePresenterImpl implements CreatePresenter, CreateInteractor.OnCreatio
     }
 
     @Override
+    public void populateData(int position) {
+        interactor.getDataFromRealm(position, this);
+    }
+
+    @Override
     public void onSuccess() {
         createView.onSuccessfullySavingDataInRealm();
+    }
+
+    @Override
+    public void onSuccess(CreateModel createModel) {
+        createView.setDataInView(createModel);
     }
 
     @Override

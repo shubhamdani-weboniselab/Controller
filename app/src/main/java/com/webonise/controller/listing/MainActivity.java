@@ -87,7 +87,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void startEditActivity(CreateModel createModel, int position) {
-
+        Intent intent = new Intent(this, CreateActivity.class);
+        intent.putExtra("position", position);
+        startActivity(intent);
     }
 
 

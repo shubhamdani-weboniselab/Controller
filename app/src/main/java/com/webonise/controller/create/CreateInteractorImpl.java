@@ -20,6 +20,18 @@ class CreateInteractorImpl implements CreateInteractor {
     }
 
     @Override
+    public void getDataFromRealm(int position, CreateInteractor.OnItemFetchListener listener) {
+        try {
+            final Realm realmInstance = ControllerApplication.getRealmInstance();
+            final CreateModel createModel = realmInstance.where(CreateModel.class).findAll().get(position);
+            listener.onSuccess(createModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+            listener.onError();
+        }
+    }
+
+    @Override
     public void saveDataInLocalDB(String title, boolean type, CreateInteractor.OnCreationFinishListener listener) {
         try {
             final Realm realmInstance = ControllerApplication.getRealmInstance();
