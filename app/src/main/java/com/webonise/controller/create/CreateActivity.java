@@ -34,7 +34,7 @@ public class CreateActivity extends BaseActivity implements View.OnClickListener
         mBtnSave.setOnClickListener(this);
 
         presenter = new CreatePresenterImpl(this);
-        final int position = getIntent().getIntExtra("position", 0);
+        final int position = getIntent().getIntExtra("position", -1);
         presenter.populateData(position);
     }
 
