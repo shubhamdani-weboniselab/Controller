@@ -12,6 +12,7 @@ class CreatePresenterImpl implements CreatePresenter, CreateInteractor.OnCreatio
 
     @Override
     public void saveDataInRealm(String title, boolean type) {
+        createView.showDialog();
         interactor.saveDataInLocalDB(title, type, this);
     }
 
@@ -26,17 +27,23 @@ class CreatePresenterImpl implements CreatePresenter, CreateInteractor.OnCreatio
     }
 
     @Override
-    public void onSuccess() {
+    public void onCreateSuccess(String rawResponse) {
         createView.onSuccessfullySavingDataInRealm();
     }
 
     @Override
     public void onSuccess(CreateModel createModel) {
+        createView.dismissDialog();
         createView.setDataInView(createModel);
     }
 
     @Override
     public void onError() {
+        createView.dismissDialog();
+    }
+
+    @Override
+    public void onCreateError(String errorMessage) {
         createView.onErrorOfSavingDataInRealm();
     }
 

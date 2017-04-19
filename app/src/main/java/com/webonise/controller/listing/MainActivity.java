@@ -1,5 +1,6 @@
 package com.webonise.controller.listing;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +15,9 @@ import com.webonise.controller.BaseActivity;
 import com.webonise.controller.R;
 import com.webonise.controller.create.CreateActivity;
 import com.webonise.controller.create.CreateModel;
+import com.webonise.controller.search.SearchActivity;
 
-import io.realm.RealmResults;
+import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, ListingView {
 
@@ -23,6 +25,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private ListingPresenter presenter;
     private RecyclerView mRlListing;
     private ListingAdapter adapter;
+    private ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,14 +33,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         mRlListing = (RecyclerView) findViewById(R.id.mRlListing);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fabSearch = (FloatingActionButton) findViewById(R.id.fabSearch);
         fab.setOnClickListener(this);
+        fabSearch.setOnClickListener(this);
         presenter = new ListingPresenterImpl(this);
         presenter.showAllData();
     }
 
     @Override
     public void onClick(View view) {
-        presenter.startCreateActivity();
+        switch (view.getId()) {
+            case R.id.fabSearch:
+                presenter.startSearchActivity();
+                break;
+            case R.id.fab:
+                presenter.startCreateActivity();
+                break;
+        }
     }
 
     @Override
@@ -47,18 +59,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
-    public void showAllListing(RealmResults<CreateModel> data) {
+    public void showAllListing(List<LisitngModel.DataEntity.ListEntity> data) {
         adapter = new ListingAdapter(MainActivity.this, data, presenter);
         mRlListing.setLayoutManager(new LinearLayoutManager(this));
         mRlListing.setAdapter(adapter);
     }
 
     @Override
-    public void showDeleteDialog(final CreateModel createModel, final int position) {
+    public void showDeleteDialog(final String id, final int position) {
         DialogInterface.OnClickListener positiveListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                presenter.deleteItem(position);
+                presenter.deleteItem(id, position);
             }
         };
         DialogInterface.OnClickListener negListener = new DialogInterface.OnClickListener() {
@@ -88,8 +100,42 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void startEditActivity(CreateModel createModel, int position) {
         Intent intent = new Intent(this, CreateActivity.class);
-        intent.putExtra("position", position);
         startActivity(intent);
+    }
+
+    @Override
+    public void gotoSearchActivity() {
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void showProgressDialog() {
+        progressDialog = ProgressDialog.show(this, "", "Loading...", true, false);
+    }
+
+    @Override
+    public void dismissProgressDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void reloadList(int position) {
+        adapter.removeItem(position);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateSuccess(int position) {
+        showMessage("todo updated");
+        adapter.setItemChecked(position);
+    }
+
+    @Override
+    public void updateFail(int position) {
+
     }
 
 
@@ -98,14 +144,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         setToolBarWithTitle(getString(R.string.listings));
     }
 
-   /* @Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case MainActivity.CREATE_CODE:
-                adapter.notifyDataSetChanged();
-                break;
+        if (requestCode == MainActivity.CREATE_CODE && resultCode == RESULT_OK) {
+            presenter.showAllData();
         }
 
-    }*/
+    }
 }

@@ -1,8 +1,5 @@
 package com.webonise.controller.create;
 
-/**
- * Created by webonise on 30/3/17.
- */
 
 interface CreateView {
 
@@ -17,4 +14,8 @@ interface CreateView {
     void onInValidData();
 
     void setDataInView(CreateModel createModel);
+
+    void dismissDialog();
+
+    void showDialog();
 }

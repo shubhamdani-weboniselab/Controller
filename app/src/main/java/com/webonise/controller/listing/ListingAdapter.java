@@ -5,21 +5,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.CheckBox;
 
 import com.webonise.controller.R;
-import com.webonise.controller.create.CreateModel;
 
-import io.realm.RealmResults;
+import java.util.List;
 
 class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.Viewholder> {
 
-
     private Context context;
-    private final RealmResults<CreateModel> data;
+    private final List<LisitngModel.DataEntity.ListEntity> data;
     private final ListingPresenter presenter;
 
-    public ListingAdapter(Context context, RealmResults<CreateModel> data, ListingPresenter presenter) {
+    public ListingAdapter(Context context, List<LisitngModel.DataEntity.ListEntity> data, ListingPresenter presenter) {
         this.context = context;
         this.data = data;
         this.presenter = presenter;
@@ -31,20 +29,21 @@ class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.Viewholder> {
     }
 
     @Override
-    public void onBindViewHolder(ListingAdapter.Viewholder holder, final int position) {
-        final CreateModel createModel = data.get(position);
-        holder.title.setText(createModel.getTitle());
-        holder.title.setOnClickListener(new View.OnClickListener() {
+    public void onBindViewHolder(final ListingAdapter.Viewholder holder, final int position) {
+        final LisitngModel.DataEntity.ListEntity createModel = data.get(position);
+        holder.chkTitle.setText(createModel.getFields().getName());
+        holder.chkTitle.setChecked(createModel.getFields().isChecked());
+        holder.chkTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.onItemClick(createModel, position);
+                presenter.onItemClick(createModel, position, holder.chkTitle.isChecked());
             }
         });
 
-        holder.title.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.chkTitle.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                presenter.onLongClick(createModel, position);
+                presenter.onLongClick(createModel.getGuid(), position);
                 return false;
             }
         });
@@ -55,12 +54,20 @@ class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.Viewholder> {
         return data == null || data.isEmpty() ? 0 : data.size();
     }
 
+    public void removeItem(int position) {
+        data.remove(position);
+    }
+
+    public void setItemChecked(int position) {
+        data.get(position).getFields().setChecked(!data.get(position).getFields().isChecked());
+    }
+
     public class Viewholder extends RecyclerView.ViewHolder {
-        TextView title;
+        CheckBox chkTitle;
 
         public Viewholder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.title);
+            chkTitle = (CheckBox) itemView.findViewById(R.id.chkTitle);
         }
     }
 }

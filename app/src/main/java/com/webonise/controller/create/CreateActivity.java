@@ -1,5 +1,6 @@
 package com.webonise.controller.create;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,10 +16,10 @@ import com.webonise.controller.listing.MainActivity;
 
 public class CreateActivity extends BaseActivity implements View.OnClickListener, CreateView {
 
-    private Button mBtnSave;
     private RadioGroup mRGType;
     private EditText mEdtTitle;
     private CreatePresenter presenter;
+    private ProgressDialog progressDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,14 +29,16 @@ public class CreateActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initViews() {
-        mBtnSave = (Button) findViewById(R.id.mBtnSave);
+        Button mBtnSave = (Button) findViewById(R.id.mBtnSave);
         mRGType = (RadioGroup) findViewById(R.id.mRgType);
         mEdtTitle = (EditText) findViewById(R.id.mEdtTitle);
         mBtnSave.setOnClickListener(this);
 
         presenter = new CreatePresenterImpl(this);
         final int position = getIntent().getIntExtra("position", -1);
-        presenter.populateData(position);
+        if (position >= 0) {
+            presenter.populateData(position);
+        }
     }
 
     @Override
@@ -84,6 +87,18 @@ public class CreateActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void setDataInView(CreateModel createModel) {
         mEdtTitle.setText(createModel.getTitle());
+    }
+
+    @Override
+    public void dismissDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void showDialog() {
+        progressDialog = ProgressDialog.show(this, "", "Loading...", true, false);
     }
 
     @Override

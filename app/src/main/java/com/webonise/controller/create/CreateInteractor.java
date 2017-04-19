@@ -7,9 +7,9 @@ interface CreateInteractor {
     void getDataFromRealm(int position, OnItemFetchListener listener);
 
     interface OnCreationFinishListener {
-        void onSuccess();
+        void onCreateSuccess(String rawResponse);
 
-        void onError();
+        void onCreateError(String errorMessage);
     }
 
     interface OnValidDataListener {
